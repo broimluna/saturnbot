@@ -25,6 +25,11 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
+
+
+ 
+
+
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Saturn a demarré, avec ${client.users.size} personnes, dans ${client.channels.size} channels de ${client.guilds.size} discord.`); 
@@ -118,6 +123,33 @@ client.on("message", async message => {
 client.channels.get("639994872689983518").send(annonceMessage)
      message.delete().catch(O_o=>{}); 
 };
+  if(command === "eval"){
+    if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
+                    let args = message.content.split(' ').slice(1)
+                    let code = args.join(' ')
+                    try {
+
+                        let evaled = eval(code);
+                        let str = require("util").inspect(evaled, {
+                            depth: 1
+                        })
+                        message.react("☑")
+            message.channel.send(`${str.substr(0, 1800)}`, {code:"js"})
+
+                    } catch (err) {
+                            message.react("❌")
+            message.channel.send(`${err}`, {code:"js"})
+                    }
+            }
+ 
+ 
+  
+ 
+ 
+  
+
+  
+
  
     
   if(command === 'reporterror') {
@@ -318,3 +350,7 @@ if(command === "help"){
 
 
 client.login(config.token);
+
+
+
+  
