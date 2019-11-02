@@ -56,13 +56,33 @@ client.on("guildDelete", guild => {
   console.log(`J'ai été retiré de: ${guild.name} et l'ID est :(id: ${guild.id})`);
   client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
 });
-client.on("guildMemberAdd", member => {
-  member.guild.channels.find("name", "bienvenue", "discutage", "join-leave", "welcome").send(`Bienvenue ${member} !`)
+client.on("guildMemberAdd", (member) => { // Check out previous chapter for information about this event
+let guild = member.guild; 
+let memberTag = member.user.tag; 
+if(guild.systemChannel){
+	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
+	.setTitle("Un nouvel utilisateur nous a rejoins!") // Calling method setTitle on constructor. 
+	.setDescription(memberTag + " a rejoins le discord!") // Setting embed description
+	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
+	.addField("Le serveur compte maintenant ce nombre d'utilisateur:", member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
+	.setTimestamp() // Sets a timestamp at the end of the embed
+	);
 }
-          );
-client.on("guildMemberRemove", member => {
-  member.guild.channels.find("name", "bienvenue", "discutage", "join-leave", "welcome").send(`${member} nous a quitté..`)
 });
+client.on("guildMemberRemove", (member) => { // Check out previous chapter for information about this event
+let guild = member.guild; 
+let memberTag = member.user.tag; 
+if(guild.systemChannel){
+	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
+	.setTitle("Un nouvel utilisateur nous a quitté...") // Calling method setTitle on constructor. 
+	.setDescription(memberTag + " a quitté le discord...") // Setting embed description
+	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
+	.addField("Le serveur compte maintenant ce nombre d'utilisateur:", member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
+	.setTimestamp() // Sets a timestamp at the end of the embed
+	);
+}
+});
+
 
 
 client.on("message", async message => {
@@ -107,7 +127,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
 		return message.channel.send();
 	}
 
-	    client.channels.get("639997214403592192").send(`${message.author.tag} a signaler une erreur. L'erreur est: ${args.join(' ')}`)
+	    client.channels.get("639997214403592192").send(`${message.author.tag} a signalé une erreur. L'erreur est: ${args.join(' ')}`)
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
 };
   
@@ -122,7 +142,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
 	    
 
       client.fetchUser("524668745520644117",false).then(user => {
-        user.send(`${message.author.tag} a signaler une erreur. L'erreur est: ${args.join(' ')}`,) 
+        user.send(`${message.author.tag} a signalé une erreur. L'erreur est: ${args.join(' ')}`,) 
 })
 	   
     message.reply("Merci de ton soutien! Je vais regarder ton erreur.")
@@ -214,7 +234,7 @@ if(command === "help"){
   .addField("Commandes amusantes","s!8ball | s!say")
   .addField("Commandes de report","s!errormp | s!reporterror")
   .addField("Commandes d'informations","s!serverinfo | s!info")
-  .addField("Autres commandes ","help | invitation | ping | avatar")
+  .addField("Autres commandes ","s!help | s!invitation | s!ping | s!avatar")
   .setFooter("Help - Saturn")
 
   message.channel.send(help_embed)
@@ -237,7 +257,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.0.2")
+    .addField("Version du bot:","Beta 0.5.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
