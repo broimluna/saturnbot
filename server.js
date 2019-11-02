@@ -230,7 +230,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
 if(command === "help"){
   var help_embed = new Discord.RichEmbed()
   .setColor("000000")
-  .setTitle("Help!")
+  .setTitle("**Commandes de Saturn**")
   .addField("Commandes d'administration","s!kick | s!ban | s!clear")
   .addField("Commandes amusantes","s!8ball | s!say")
   .addField("Commandes de report","s!errormp | s!reporterror")
