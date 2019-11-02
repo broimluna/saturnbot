@@ -74,7 +74,7 @@ let guild = member.guild;
 let memberTag = member.user.tag; 
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
-	.setTitle("Un nouvel utilisateur nous a quitté...") // Calling method setTitle on constructor. 
+	.setTitle("Un utilisateur nous a quitté...") // Calling method setTitle on constructor. 
 	.setDescription(memberTag + " a quitté le discord...") // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
 	.addField("Le serveur compte maintenant ce nombre d'utilisateur:", member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
@@ -82,6 +82,7 @@ if(guild.systemChannel){
 	);
 }
 });
+
 
 
 
