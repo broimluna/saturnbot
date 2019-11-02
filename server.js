@@ -113,7 +113,7 @@ client.on("message", async message => {
     m.edit(`Pong! :ping_pong: La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. La latence de l'API est de ${Math.round(client.ping)}ms`);
   }
   if(command === "annonce") {
-    if(message.author.id !== config.ownerID) return;
+    if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
      const annonceMessage = args.join(" ");
 client.channels.get("639994872689983518").send(annonceMessage)
      message.delete().catch(O_o=>{}); 
