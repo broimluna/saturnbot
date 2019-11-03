@@ -38,7 +38,7 @@ const config = require("./config.json");
      let status = statuses[Math.floor(Math.random()*statuses.length)];
      
      client.user.setPresence({ game : { name: status }, status: "online"})
-   }, 20000)
+   }, 5000)
  });
                       
 
