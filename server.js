@@ -157,10 +157,20 @@ client.channels.get("639994872689983518").send(annonceMessage)
 	else if (args[0] === `${message}`) {
 		return message.channel.send();
 	}
-
-	    client.channels.get("639997214403592192").send(`${message.author.tag} a signalé une erreur. L'erreur est: ${args.join(' ')}`)
+   var embed = new Discord.RichEmbed()
+    .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
+    .setDescription(`**Report de problème / bug de ${message.author.tag}**`)//tu peUx maider avec le clear? oui Mrc
+    .addField("Personne qui a reporté un bug / problème:", `${message.author.tag}`, true)
+   .addField("Erreur / bug:", `${args.join(' ')}`, true)
+     .addField("Type d'erreur", "Erreur sur le Discord.")
+    .setFooter("Avis de report - Saturn")
+  client.channels.get("639997214403592192").send(embed)
+   
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
-};
+  }
+ 
+  
+	 
   
     if(command === 'errormp') {
 	if (!args.length) {
@@ -173,7 +183,14 @@ client.channels.get("639994872689983518").send(annonceMessage)
 	    
 
       client.fetchUser("524668745520644117",false).then(user => {
-        user.send(`${message.author.tag} a signalé une erreur. L'erreur est: ${args.join(' ')}`,) 
+        var embed = new Discord.RichEmbed()
+    .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
+    .setDescription(`**Report de problème / bug de ${message.author.tag}**`)//tu peUx maider avec le clear? oui Mrc
+    .addField("Personne qui a reporté un bug / problème:", `${message.author.tag}`, true)
+   .addField("Erreur / bug:", `${args.join(' ')}`, true)
+     .addField("Type d'erreur", "Erreur en message privé")
+    .setFooter("Avis de report - Saturn")
+        user.send(embed) 
      
 })
 	   
@@ -307,7 +324,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.7.0")
+    .addField("Version du bot:","Beta 0.7.1")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
@@ -371,7 +388,7 @@ if(command === "userinfo") {
     // So we get our messages, and delete them. Simple enough, right?
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
     message.channel.bulkDelete(fetched)
-      .catch(error => message.reply(`Je n'ai pas reussi a effacer les message a cause de: ${error}`));
+      .catch(error => message.reply(`Je n'ai pas reussi a effacer les messages a cause de: ${error}`));
     message.reply("J'ai supprimé ce nombre de message: " + deleteCount) 
     setTimeout(function(){ 
       message.channel.bulkDelete(1)
