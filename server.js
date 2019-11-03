@@ -66,10 +66,10 @@ let guild = member.guild;
 let memberTag = member.user.tag; 
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
-	.setTitle("Un nouvel utilisateur nous a rejoins!") // Calling method setTitle on constructor. 
-	.setDescription(memberTag + " a rejoins le discord!") // Setting embed description
+	.setTitle("Un nouvel utilisateur nous a rejoint!") // Calling method setTitle on constructor. 
+	.setDescription(memberTag + ` a rejoint ${guild.name}!`) // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
-	.addField("Le serveur compte maintenant ce nombre d'utilisateur:", member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
+	.addField(`${guild.name} compte maintenant ce nombre d'utilisateur:`, member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
 	.setTimestamp() // Sets a timestamp at the end of the embed
 	);
 }
@@ -80,9 +80,9 @@ let memberTag = member.user.tag;
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
 	.setTitle("Un utilisateur nous a quitté...") // Calling method setTitle on constructor. 
-	.setDescription(memberTag + " a quitté le discord...") // Setting embed description
+	.setDescription(memberTag + ` a quitté ${guild.name}...`) // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
-	.addField("Le serveur compte maintenant ce nombre d'utilisateur:", member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
+	.addField(`${guild.name} compte maintenant ce nombre d'utilisateur:`, member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
 	.setTimestamp() // Sets a timestamp at the end of the embed
 	);
 }
@@ -114,7 +114,7 @@ client.on("message", async message => {
   if(command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-    const m = await message.channel.send("Ping?");
+    const m = await message.channel.send("Attends une seconde...");
     m.edit(`Pong! :ping_pong: La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. La latence de l'API est de ${Math.round(client.ping)}ms`);
   }
   if(command === "annonce") {
@@ -144,14 +144,6 @@ client.channels.get("639994872689983518").send(annonceMessage)
  
  
   
- 
- 
-  
-
-  
-
- 
-    
   if(command === 'reporterror') {
 	if (!args.length) {
 		return message.channel.send(`Tu n'as pas fournie d'erreur!, ${message.author}!`)
@@ -236,7 +228,16 @@ client.channels.get("639994872689983518").send(annonceMessage)
     // Now, time for a swift kick in the nuts!
     await member.kick(reason)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu kick la personne a cause de : ${error}`));
-    message.reply(`${member.user.tag} a été kick par ${message.author.tag} a cause de: ${reason}`);
+    
+    var inf_embed = new Discord.RichEmbed()
+    .setColor('00cbff')
+    .setDescription(`Kickement de ${member.user.tag}`)
+    .addField("Nom de la personne kické:", `${member.user.tag}`, true)
+    .addField("Kické  par", `${message.author.tag}`, true)
+    .addField("Raison du kick:", `${reason}`)
+  
+    .setFooter("Avis de kickement - Saturn")
+    message.reply(inf_embed)
 
   }
   
@@ -257,7 +258,16 @@ client.channels.get("639994872689983518").send(annonceMessage)
     
     await member.ban(reason)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu ban la personne a cause de : ${error}`));
-    message.reply(`{member.user.tag} a été ban par ${message.author.tag} a cause de: ${reason}`);
+ 
+      var inf_embed = new Discord.RichEmbed()
+    .setColor('00cbff')
+    .setDescription(`Bannisement de ${member.user.tag}`)
+    .addField("Nom du banni:", `${member.user.tag}`, true)
+    .addField("Banni par", `${message.author.tag}`, true)
+    .addField("Raison du ban", `${reason}`)
+  
+    .setFooter("Avis de bannisement - Saturn")
+    message.reply(inf_embed)
   }
 if(command === "help"){
   var help_embed = new Discord.RichEmbed()
@@ -290,7 +300,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.5.0")
+    .addField("Version du bot:","Beta 0.6.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
@@ -346,6 +356,7 @@ if(command === "help"){
       .catch(error => message.reply(`Je n'ai pas reussi a effacer les message a cause de: ${error}`));
   }
 });
+
   
 
 
