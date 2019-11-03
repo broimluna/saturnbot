@@ -7,12 +7,15 @@ const express = require('express');
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping");
-  response.sendStatus(200);
+ response.status(200).send('some text');
 });
 app.listen(process.env.PORT);
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 10000);
+
+
+
 
 
 // This is your client. Some people call it `bot`, some people call it `self`, 
@@ -300,7 +303,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.6.0")
+    .addField("Version du bot:","Beta 0.6.1")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
@@ -354,6 +357,13 @@ if(command === "help"){
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Je n'ai pas reussi a effacer les message a cause de: ${error}`));
+    message.reply("J'ai supprimé ce nombre de message: " + deleteCount) 
+    setTimeout(function(){ 
+      message.channel.bulkDelete(1)
+}, 2000);
+   
+    
+    
   }
 });
 
