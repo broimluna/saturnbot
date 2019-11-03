@@ -2,12 +2,13 @@
 const Discord = require("discord.js");
 var bot = new Discord.Client();
 const ms = require("ms");
+const moment = require("moment");
 const http = require('http');
 const express = require('express');
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping");
- response.status(200).send('some text');
+  response.sendStatus(200);
 });
 app.listen(process.env.PORT);
 setInterval(() => {
@@ -69,6 +70,7 @@ let guild = member.guild;
 let memberTag = member.user.tag; 
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
+  .setColor("RANDOM")
 	.setTitle("Un nouvel utilisateur nous a rejoint!") // Calling method setTitle on constructor. 
 	.setDescription(memberTag + ` a rejoint ${guild.name}!`) // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
@@ -82,6 +84,7 @@ let guild = member.guild;
 let memberTag = member.user.tag; 
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
+  .setColor("RANDOM")
 	.setTitle("Un utilisateur nous a quitté...") // Calling method setTitle on constructor. 
 	.setDescription(memberTag + ` a quitté ${guild.name}...`) // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
@@ -171,6 +174,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
 
       client.fetchUser("524668745520644117",false).then(user => {
         user.send(`${message.author.tag} a signalé une erreur. L'erreur est: ${args.join(' ')}`,) 
+     
 })
 	   
     message.reply("Merci de ton soutien! Je vais regarder ton erreur.")
@@ -197,7 +201,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
   const ballText = args.join(" ");
 			var result = Math.floor((Math.random() * sayings.length) + 0);
 			const embed = new Discord.RichEmbed()
-     .setColor("000000")
+     .setColor("RANDOM")
     .setTitle("8ball")
     .addField(ballText, sayings[result])
     message.channel.send({embed:embed})
@@ -233,7 +237,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu kick la personne a cause de : ${error}`));
     
     var inf_embed = new Discord.RichEmbed()
-    .setColor('00cbff')
+    .setColor('RANDOM')
     .setDescription(`Kickement de ${member.user.tag}`)
     .addField("Nom de la personne kické:", `${member.user.tag}`, true)
     .addField("Kické  par", `${message.author.tag}`, true)
@@ -263,7 +267,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu ban la personne a cause de : ${error}`));
  
       var inf_embed = new Discord.RichEmbed()
-    .setColor('00cbff')
+    .setColor('RANDOM')
     .setDescription(`Bannisement de ${member.user.tag}`)
     .addField("Nom du banni:", `${member.user.tag}`, true)
     .addField("Banni par", `${message.author.tag}`, true)
@@ -274,12 +278,12 @@ client.channels.get("639994872689983518").send(annonceMessage)
   }
 if(command === "help"){
   var help_embed = new Discord.RichEmbed()
-  .setColor("000000")
+  .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
   .addField("Commandes d'administration","s!kick | s!ban | s!clear")
   .addField("Commandes amusantes","s!8ball | s!say")
   .addField("Commandes de report","s!errormp | s!reporterror")
-  .addField("Commandes d'informations","s!serverinfo | s!info")
+  .addField("Commandes d'informations","s!serverinfo | s!info | s!userinfo")
   .addField("Autres commandes ","s!help | s!invitation | s!ping | s!avatar")
   .setFooter("Help - Saturn")
 
@@ -288,7 +292,7 @@ if(command === "help"){
 }
   if(command === "invitation"){
   var help_embed = new Discord.RichEmbed()
-  .setColor("000000")
+  .setColor("RANDOM")
   .setTitle("Invitation")
   .addField("Invitez le bot sur votre serveur!", "https://discordapp.com/oauth2/authorize?client_id=639248385794113563&scope=bot&permissions=805314622")
   .setFooter("Invitation - Saturn")
@@ -298,12 +302,12 @@ if(command === "help"){
  
      if(command === "info") {
     var inf_embed = new Discord.RichEmbed()
-    .setColor('00cbff')
+    .setColor('RANDOM')
     .setDescription("**Info sur moi**")
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.6.1")
+    .addField("Version du bot:","Beta 0.7.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
@@ -313,11 +317,22 @@ if(command === "help"){
     
   //message.member.send(`:eyes:Info sur moi:eyes:\nNom: Mars\nCreateur: LunatiikXD\nCreer avec discord.js 11.4.0\nJe suis sur ${client.guilds.size} serveurs !`)
  
+     }
+    let user = message.mentions.users.first() || message.author;
+if(command === "userinfo") {
+   var embed = new Discord.RichEmbed()
+    .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
+    .setDescription(`**Info de ${message.author.tag}**`)//tu peUx maider avec le clear? oui Mrc
+   .setThumbnail(message.author.displayAvatarURL) 
+     .addField("Nom de l'utilisateur", message.author.tag, false)
+    .addField('Compte crée le:', `${user.createdAt}`, true)
+    .addField("ID de l'utilisateur", user.id, true)
+   .setFooter("Userinfo - Saturn")
+    message.channel.sendEmbed(embed)
   }
-
   if(command === "serverinfo") {
     var embed = new Discord.RichEmbed()
-    .setColor('00cbff')//mec pk ta retirer C koi cette couleur Blue Ok
+    .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
     .setDescription("**Info du serveur Discord**")//tu peUx maider avec le clear? oui Mrc
     .addField("Nom du serveur", message.guild.name, false)
     .addField("Crée le", message.guild.createdAt, true)
@@ -328,7 +343,7 @@ if(command === "help"){
   }
   if(command === "avatar") {
     var help_embed = new Discord.RichEmbed()
-	  .setColor("000000")
+	  .setColor("RANDOM")
 	  .setTitle("Avatar")
 	  .setImage(message.author.avatarURL)
 	  .setFooter("Avatar - Saturn")
