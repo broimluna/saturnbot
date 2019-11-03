@@ -2,7 +2,6 @@
 const Discord = require("discord.js");
 var bot = new Discord.Client();
 const ms = require("ms");
-const moment = require("moment");
 const http = require('http');
 const express = require('express');
 const app = express();
@@ -31,16 +30,26 @@ const config = require("./config.json");
 
 
 
- 
+ client.on("ready", () => {
+    console.log(`Saturn a demarré, avec ${client.users.size} personnes, dans ${client.channels.size} channels de ${client.guilds.size} discord.`); 
+   let statuses = [`s!help | Sur ${client.guilds.size} serveurs`, `s!help | ${client.users.size} personnes utilisent Saturn. `];
+   setInterval(function() {
+     
+     let status = statuses[Math.floor(Math.random()*statuses.length)];
+     
+     client.user.setPresence({ game : { name: status }, status: "online"})
+   }, 20000)
+ });
+                      
 
-
-client.on("ready", () => {
+//client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Saturn a demarré, avec ${client.users.size} personnes, dans ${client.channels.size} channels de ${client.guilds.size} discord.`); 
+//  console.log(`Saturn a demarré, avec ${client.users.size} personnes, dans ${client.channels.size} channels de ${client.guilds.size} discord.`); 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
-  client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
-});
+ // client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
+//});
+
 
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
@@ -390,7 +399,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.8.0")
+    .addField("Version du bot:","Beta 0.9.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
