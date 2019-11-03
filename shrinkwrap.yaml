@@ -2,6 +2,7 @@ dependencies:
   discord.js: 11.5.1
   express: 4.16.4
   https: 1.0.0
+  moment: 2.24.0
   ms: 2.1.2
   util: 0.12.1
 packages:
@@ -355,6 +356,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-KI1+qOZu5DcW6wayYHSzR/tXKCDC5Om4s1z2QJjDULzLcmf3DvzS7oluY4HCTrc+9FiKmWUgeNLg7W3uIQvxtQ==
+  /moment/2.24.0:
+    dev: false
+    resolution:
+      integrity: sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -580,5 +585,6 @@ specifiers:
   discord.js: ^11.5.1
   express: ^4.16.4
   https: ^1.0.0
+  moment: ^2.24.0
   ms: ^2.1.2
   util: ^0.12.1
