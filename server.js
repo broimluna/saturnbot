@@ -66,8 +66,8 @@ let guild = member.guild;
 let memberTag = member.user.tag; 
 if(guild.systemChannel){
 	guild.systemChannel.send(new Discord.RichEmbed() // Creating instance of Discord.RichEmbed
-	.setTitle("Un nouvel utilisateur nous a rejoins!") // Calling method setTitle on constructor. 
-	.setDescription(memberTag + ` a rejoins ${guild.name}!`) // Setting embed description
+	.setTitle("Un nouvel utilisateur nous a rejoint!") // Calling method setTitle on constructor. 
+	.setDescription(memberTag + ` a rejoint ${guild.name}!`) // Setting embed description
 	.setThumbnail(member.user.displayAvatarURL) // The image on the top right; method requires an url, not a path to file!
 	.addField(`${guild.name} compte maintenant ce nombre d'utilisateur:`, member.guild.memberCount,) // Adds a field; First parameter is the title and the second is the value.
 	.setTimestamp() // Sets a timestamp at the end of the embed
