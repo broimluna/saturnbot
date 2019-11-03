@@ -168,6 +168,72 @@ client.channels.get("639994872689983518").send(annonceMessage)
    
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
   }
+  var warnembedColor = '#FF0000' // Change this to change the color of the embeds!
+
+    
+if(command === 'warn') {
+   var warnEmbedColor = 'RANDOM' // Change this to change the color of the embeds!
+    var missingPermissionsEmbed = new Discord.RichEmbed() // Creates the embed thats sent if the user is missing permissions
+
+        .setColor(warnEmbedColor)
+
+        .setAuthor(message.author.username, message.author.avatarURL)
+
+        .setTitle("Désolé, mais je tu n'a pas les permissions")
+
+        .setDescription(`Désolé ${message.author.tag}, mais tu n'as pas les permissions!`)
+
+        .setTimestamp();
+
+    var missingArgsEmbed = new Discord.RichEmbed() // Creates the embed thats sent if the command isnt run right
+
+        .setColor(warnEmbedColor)
+
+        .setAuthor(message.author.username, message.author.avatarURL)
+
+        .setTitle("Mauvaise utilisation de la commande.")
+
+        .setDescription("Veuillez mentionner quelqu'un a warn, puis donner la raison du warn.")
+
+        .setTimestamp();
+
+    if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(missingPermissionsEmbed); // Checks if the user has the permission
+
+    let mentioned = message.mentions.users.first(); // Gets the user mentioned! message.guild.channels.find(x => x.name === d-logs)
+
+    if(!mentioned) return message.channel.send(missingArgsEmbed); // Triggers if the user donsn't tag a user in the message
+
+    let reason = args.slice(1).join(' ') // .slice(1) removes the user mention, .join(' ') joins all the words in the message, instead of just sending 1 word
+
+    if(!reason) return message.channe.send(missingArgsEmbed); // Triggers if the user dosn't provide a reason for the warning
+
+    var warningEmbed = new Discord.RichEmbed() // Creates the embed that's DM'ed to the user when their warned!
+
+        .setColor(warnEmbedColor)
+
+        .setAuthor(message.author.username, message.author.avatarURL)
+
+        .setTitle(`Vous avez été warn dans le Discord: ${message.guild.name}.`)
+
+        .addField('Warn par', message.author.tag)
+
+        .addField('Raison:', reason)
+
+        .setTimestamp();
+
+  mentioned.send(warningEmbed); // DMs the user the above embed!
+
+    var warnSuccessfulEmbed = new Discord.RichEmbed() // Creates the embed thats returned to the person warning if its sent.
+
+        .setColor(warnEmbedColor)
+
+        .setTitle(mentioned + ` a été warn!`);
+
+    message.channel.send(warnSuccessfulEmbed); // Sends the warn successful embed
+
+    message.delete(); // Deletes the command
+
+}
  
   
 	 
@@ -297,7 +363,7 @@ if(command === "help"){
   var help_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
-  .addField("Commandes d'administration","s!kick | s!ban | s!clear")
+  .addField("Commandes d'administration","s!kick | s!ban | s!warn | s!clear")
   .addField("Commandes amusantes","s!8ball | s!say")
   .addField("Commandes de report","s!errormp | s!reporterror")
   .addField("Commandes d'informations","s!serverinfo | s!info | s!userinfo")
@@ -324,7 +390,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 0.7.1")
+    .addField("Version du bot:","Beta 0.8.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
