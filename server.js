@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping");
- response.status(200).send('some text');
+  response.sendStatus(200);
 });
 app.listen(process.env.PORT);
 setInterval(() => {
