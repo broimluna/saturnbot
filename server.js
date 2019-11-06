@@ -299,10 +299,10 @@ client.channels.get("639994872689983518").send(annonceMessage)
     // Let's first check if we have a member and if we can kick them!
     // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
     // We can also support getting the member by ID, which would be args[0]
-    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-    if(!member)
+    let kickmember = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!kickmember)
       return message.reply("Mentionnez une personne dans le serveur");
-    if(!member.kickable) 
+    if(!kickmember.kickable) 
       return message.reply("Je ne peut pas le kick! Ont-il un role plus haut? Est-ce que j'ai les permissions de kick?");
     
     // slice(1) removes the first part, which here should be the user mention or ID
@@ -311,19 +311,21 @@ client.channels.get("639994872689983518").send(annonceMessage)
     if(!reason) reason = "Pas de raison fournie";
     
     // Now, time for a swift kick in the nuts!
-    await member.kick(reason)
+    await kickmember.send(`Vous avez été kick du Discord "${message.guild.name}". La raison est: ${reason}. `)
+    await kickmember.kick(reason)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu kick la personne a cause de : ${error}`));
+
     
     var kick_embed = new Discord.RichEmbed()
     .setColor('RANDOM')
-    .setDescription(`Kickement de ${member.user.tag}`)
-    .addField("Nom de la personne kické:", `${member.user.tag}`, true)
+    .setDescription(`Kickement de ${kickmember.user.tag}`)
+    .addField("Nom de la personne kické:", `${kickmember.user.tag}`, true)
     .addField("Kické  par", `${message.author.tag}`, true)
     .addField("Raison du kick:", `${reason}`)
   
     .setFooter("Avis de kickement - Saturn")
     message.reply(kick_embed)
-       message.member.send(`Vous avez été kick du Discord "${message.guild.name}"! `)
+       
 
   }
 
@@ -473,28 +475,28 @@ if(command === 'mute') {
     // In the real world mods could ban too, but this is just an example, right? ;)
    if(!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send("Desolé! Tu n'as pas les permissions!");
     
-    let member = message.mentions.members.first();
-    if(!member)  
+    let banmember = message.mentions.members.first();
+    if(!banmember)  
       return message.reply("Mentionnez une personne dans le serveur");
-    if(!member.bannable) 
+    if(!banmember.bannable) 
       return message.reply("Je ne peut pas le ban! Ont-il un role plus haut? Est-ce que j'ai les permissions de ban?");
 
     let reason = args.slice(1).join(' ');
     if(!reason) reason = "Pas de raison fournie";
-    
-    await member.ban(reason)
+    await banmember.send(`Vous avez été banni du Discord "${message.guild.name}". La raison est: ${reason}. `)
+    await banmember.ban(reason)
       .catch(error => message.reply(`Desolé ${message.author}, Je n'ai pas pu ban la personne a cause de : ${error}`));
  
       var ban_embed = new Discord.RichEmbed()
     .setColor('RANDOM')
-    .setDescription(`Bannisement de ${member.user.tag}`)
-    .addField("Nom du banni:", `${member.user.tag}`, true)
+    .setDescription(`Bannisement de ${banmember.user.tag}`)
+    .addField("Nom du banni:", `${banmember.user.tag}`, true)
     .addField("Banni par", `${message.author.tag}`, true)
     .addField("Raison du ban", `${reason}`)
   
     .setFooter("Avis de bannisement - Saturn")
     message.reply(ban_embed)
-    message.member.send(`Vous avez été banni du Discord "${message.guild.name}"! `)
+   
   
   }
   
