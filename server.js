@@ -145,7 +145,7 @@ client.on("message", async message => {
             .setImage(img)
             .setTitle(`Meme du subreddit /r/${random}`)
             .setURL(`https://reddit.com/r/${random}`)
-            .setFooter(`S'il vous plait attendre 40s ou + pour que l'image charge :)`)
+            .setFooter(`Si l'image n'apparait pas immédiatement, veuillez attendre quelque secondes pour que l'image charge :)`)
 
         message.channel.send(embed);
   }
