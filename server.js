@@ -534,7 +534,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","Beta 1.0.0")
+    .addField("Version du bot:","1.0.0")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
