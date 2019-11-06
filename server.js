@@ -4,6 +4,7 @@ var bot = new Discord.Client();
 const http = require('http');
 const ms = require('ms');
 const express = require('express');
+const randomPuppy = require('random-puppy');
 const app = express();
 app.get("/", (request, response) => {
  
@@ -133,6 +134,20 @@ client.on("message", async message => {
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Attends une seconde...");
     m.edit(`Pong! :ping_pong: La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. La latence de l'API est de ${Math.round(client.ping)}ms`);
+  }
+  if(command === "meme") {
+            const subReddits = ["dankmeme", "meme", "me_irl"];
+        const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+
+        const img = await randomPuppy(random);
+        const embed = new Discord.RichEmbed()
+            .setColor("RANDOM")
+            .setImage(img)
+            .setTitle(`Meme du subreddit /r/${random}`)
+            .setURL(`https://reddit.com/r/${random}`)
+            .setFooter(`S'il vous plait attendre 40s ou + pour que l'image charge :)`)
+
+        message.channel.send(embed);
   }
   if(command === "annonce") {
     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
@@ -491,7 +506,7 @@ if(command === "help"){
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
   .addField("Commandes d'administration","s!kick | s!ban | s!warn | s!clear | s!mute")
-  .addField("Commandes amusantes","s!8ball | s!say")
+  .addField("Commandes amusantes","s!8ball | s!say | s!meme")
   .addField("Commandes de report","s!errormp | s!reporterror")
   .addField("Commandes d'informations","s!serverinfo | s!info | s!userinfo")
   .addField("Autres commandes","s!help | s!invitation | s!ping | s!avatar")
