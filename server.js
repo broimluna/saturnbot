@@ -34,7 +34,7 @@ const config = require("./config.json");
 
 
  client.on("ready", () => {
-    console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`); 
+    console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`);
    let statuses = [`s!help || Sur ${client.guilds.size} serveurs`, `s!help || ${client.users.size} personnes utilisent Saturn. `];
    setInterval(function() {
      
@@ -43,6 +43,9 @@ const config = require("./config.json");
      client.user.setPresence({ game : { name: status }, status: "online"})
    }, 60000)
  });
+
+
+	
                       
 
 //client.on("ready", () => {
@@ -243,26 +246,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
    
       
     }
-   
-  if(command === "saytest") {
-    // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
-    // To get the "message" itself we join the `args` back into a string with spaces: 
-    
-    const sayMessage = args.join(" ");
-    
-    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-    message.delete().catch(O_o=>{}); 
-    // And we get the bot to say the thing:
-
-
-    
-    
-    message.channel.send(sayMessage);
- 
-   
-      
-    }
-
+  
 
 
 
@@ -334,7 +318,7 @@ if(command === 'mute') {
   if(!message.guild.me.hasPermission(['MANAGE_ROLES', 'ADMINISTRATOR'])) return message.channel.send("Désolé, mais tu n'as pas la permission!");
   
   let tomute = message.mentions.members.first() || message.guild.members.get(args[0])
-  if(!tomute) return message.reply("Mentionnez une personne dans le serveur.\nUtilisation de la commande: s!mute [utilisateur] [temps]")
+  if(!tomute) return message.reply("Mentionnez une personne dans le serveur.\nUtilisation de la commande: s!mute [utilisateur] [temps] [raison]")
   
    let reason = args.slice(1).join(' de mute a cause de: ');
     if(!reason) reason = "Pas de raison fournie";
@@ -361,7 +345,9 @@ if(command === 'mute') {
     }
   }
   let mutetime =  args[1];
+    if(!reason) return message.reply
   if(!mutetime) return message.reply("Tu n'a pas spécifier le temps avant l'unmute et de raison de mute!");
+  if(!reason) return message.reply("test")
    let mutedembed = new Discord.RichEmbed()
         .setDescription(`Avis de mute de ${tomute}`)
         .setColor("RANDOM")
@@ -401,7 +387,15 @@ if(command === 'mute') {
   //}
     
   
-
+ if(command === "serverlist") {
+    if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
+      var serverlist_embed = new Discord.RichEmbed()
+  .setColor("RANDOM")
+  .setTitle("**Nombre de Discord que Saturn est sur**")
+  .addField("Serveurs:",`${client.guilds.array().sort()}`)
+  .setFooter("Serverlist - Saturn")
+      message.channel.send(serverlist_embed)
+};
  
   
 
@@ -468,8 +462,6 @@ if(command === 'mute') {
     message.delete(); // Deletes the command
 
 }
- 
-  
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
@@ -504,6 +496,8 @@ if(command === 'mute') {
     
       
 if(command === "help"){
+  
+   
   var help_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
@@ -535,7 +529,7 @@ if(command === "help"){
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
     .addField("Version du bot:","1.0.0")
-    .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
+    .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false) 
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
     .setThumbnail(client.user.avatarURL)
