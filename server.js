@@ -143,14 +143,14 @@ client.on("message", async message => {
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
         const img = await randomPuppy(random);
-        const embed = new Discord.RichEmbed()
+        const memeembed = new Discord.RichEmbed()
             .setColor("RANDOM")
             .setImage(img)
             .setTitle(`Meme du subreddit /r/${random}`)
             .setURL(`https://reddit.com/r/${random}`)
             .setFooter(`Si l'image n'apparait pas immédiatement, veuillez attendre quelque secondes pour que l'image charge :)`)
 
-        message.channel.send(embed);
+        message.channel.send(memeembed);
   }
   if(command === "annonce") {
     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
@@ -237,10 +237,6 @@ client.channels.get("639994872689983518").send(annonceMessage)
     // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing:
-
-
-    
-    
     message.channel.send(sayMessage);
  
    
@@ -287,7 +283,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
     if(!kickmember)
       return message.reply("Mentionnez une personne dans le serveur");
     if(!kickmember.kickable) 
-      return message.reply("Je ne peut pas le kick! Ont-il un role plus haut? Est-ce que j'ai les permissions de kick?");
+      return message.reply("Je ne peut pas le kick! A-t-il un role plus haut? Est-ce que j'ai les permissions de kick?");
     
     // slice(1) removes the first part, which here should be the user mention or ID
     // join(' ') takes all the various parts to make it a single string.
@@ -308,7 +304,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
     .addField("Raison du kick:", `${reason}`)
   
     .setFooter("Avis de kickement - Saturn")
-    message.reply(kick_embed)
+    message.channel.send(kick_embed)
        
 
   }
@@ -487,7 +483,7 @@ if(command === 'mute') {
     .addField("Raison du ban", `${reason}`)
   
     .setFooter("Avis de bannisement - Saturn")
-    message.reply(ban_embed)
+    message.channel.send(ban_embed)
    
   
   }
@@ -534,7 +530,7 @@ if(command === "help"){
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
     .setThumbnail(client.user.avatarURL)
     .setFooter("Info - Saturn")
-    message.channel.sendEmbed(inf_embed)
+    message.channel.send(inf_embed)
     
   //message.member.send(`:eyes:Info sur moi:eyes:\nNom: Mars\nCreateur: LunatiikXD\nCreer avec discord.js 11.4.0\nJe suis sur ${client.guilds.size} serveurs !`)
  
@@ -550,18 +546,21 @@ if(command === "userinfo") {
     .addField("ID de l'utilisateur", user.id, true)
      .addField("Tu a rejoins ce discord le", message.member.joinedAt, true)
    .setFooter("Userinfo - Saturn")
-    message.channel.sendEmbed(userEmbed)
+    message.channel.send(userEmbed)
   }
   if(command === "serverinfo") {
     var servEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
     .setDescription("**Info du serveur Discord**")//tu peUx maider avec le clear? oui Mrc
+    .setThumbnail(message.guild.iconURL)
     .addField("Nom du serveur", message.guild.name, false)
     .addField("Crée le", message.guild.createdAt, true)
     .addField("Tu a rejoins le", message.member.joinedAt, true)
     .addField("Membres sur le serveur", message.guild.memberCount, false)
+    .addField("Propriétaire du Discord:", message.guild.owner.user.tag, false)
+    
     .setFooter("Serverinfo - Saturn")
-    message.channel.sendEmbed(servEmbed)
+    message.channel.send(servEmbed)
   }
   if(command === "avatar") {
     var avatar_embed = new Discord.RichEmbed()
@@ -569,7 +568,7 @@ if(command === "userinfo") {
 	  .setTitle("Avatar")
 	  .setImage(message.author.avatarURL)
 	  .setFooter("Avatar - Saturn")
-	  message.channel.sendEmbed(avatar_embed);
+	  message.channel.send(avatar_embed);
   }
 
 
