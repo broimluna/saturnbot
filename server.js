@@ -283,7 +283,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
     if(!kickmember)
       return message.reply("Mentionnez une personne dans le serveur");
     if(!kickmember.kickable) 
-      return message.reply("Je ne peut pas le kick! A-t-il un role plus haut? Est-ce que j'ai les permissions de kick?");
+      return message.reply("Je ne peut pas le kick! L'utilisateur a t-il un role plus haut? Est-ce que j'ai les permissions de kick?");
     
     // slice(1) removes the first part, which here should be the user mention or ID
     // join(' ') takes all the various parts to make it a single string.
@@ -467,7 +467,7 @@ if(command === 'mute') {
     if(!banmember)  
       return message.reply("Mentionnez une personne dans le serveur");
     if(!banmember.bannable) 
-      return message.reply("Je ne peut pas le ban! Ont-il un role plus haut? Est-ce que j'ai les permissions de ban?");
+      return message.reply("Je ne peut pas le ban! L'utilisateur a t-il un role plus haut? Est-ce que j'ai les permissions de ban?");
 
     let reason = args.slice(1).join(' ');
     if(!reason) reason = "Pas de raison fournie";
