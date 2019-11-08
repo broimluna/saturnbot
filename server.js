@@ -34,7 +34,7 @@ const config = require("./config.json");
 
 
  client.on("ready", () => {
-    console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`); 
+    console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`);
    let statuses = [`s!help || Sur ${client.guilds.size} serveurs`, `s!help || ${client.users.size} personnes utilisent Saturn. `];
    setInterval(function() {
      
@@ -43,6 +43,9 @@ const config = require("./config.json");
      client.user.setPresence({ game : { name: status }, status: "online"})
    }, 60000)
  });
+
+
+	
                       
 
 //client.on("ready", () => {
@@ -140,14 +143,14 @@ client.on("message", async message => {
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
         const img = await randomPuppy(random);
-        const embed = new Discord.RichEmbed()
+        const memeembed = new Discord.RichEmbed()
             .setColor("RANDOM")
             .setImage(img)
             .setTitle(`Meme du subreddit /r/${random}`)
             .setURL(`https://reddit.com/r/${random}`)
             .setFooter(`Si l'image n'apparait pas immédiatement, veuillez attendre quelque secondes pour que l'image charge :)`)
 
-        message.channel.send(embed);
+        message.channel.send(memeembed);
   }
   if(command === "annonce") {
     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
@@ -234,35 +237,12 @@ client.channels.get("639994872689983518").send(annonceMessage)
     // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing:
-
-
-    
-    
     message.channel.send(sayMessage);
  
    
       
     }
-   
-  if(command === "saytest") {
-    // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
-    // To get the "message" itself we join the `args` back into a string with spaces: 
-    
-    const sayMessage = args.join(" ");
-    
-    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-    message.delete().catch(O_o=>{}); 
-    // And we get the bot to say the thing:
-
-
-    
-    
-    message.channel.send(sayMessage);
- 
-   
-      
-    }
-
+  
 
 
 
@@ -303,7 +283,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
     if(!kickmember)
       return message.reply("Mentionnez une personne dans le serveur");
     if(!kickmember.kickable) 
-      return message.reply("Je ne peut pas le kick! Ont-il un role plus haut? Est-ce que j'ai les permissions de kick?");
+      return message.reply("Je ne peut pas le kick! L'utilisateur a t-il un role plus haut? Est-ce que j'ai les permissions de kick?");
     
     // slice(1) removes the first part, which here should be the user mention or ID
     // join(' ') takes all the various parts to make it a single string.
@@ -324,7 +304,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
     .addField("Raison du kick:", `${reason}`)
   
     .setFooter("Avis de kickement - Saturn")
-    message.reply(kick_embed)
+    message.channel.send(kick_embed)
        
 
   }
@@ -334,7 +314,7 @@ if(command === 'mute') {
   if(!message.guild.me.hasPermission(['MANAGE_ROLES', 'ADMINISTRATOR'])) return message.channel.send("Désolé, mais tu n'as pas la permission!");
   
   let tomute = message.mentions.members.first() || message.guild.members.get(args[0])
-  if(!tomute) return message.reply("Mentionnez une personne dans le serveur.\nUtilisation de la commande: s!mute [utilisateur] [temps]")
+  if(!tomute) return message.reply("Mentionnez une personne dans le serveur.\nUtilisation de la commande: s!mute [utilisateur] [temps] [raison]")
   
    let reason = args.slice(1).join(' de mute a cause de: ');
     if(!reason) reason = "Pas de raison fournie";
@@ -361,7 +341,9 @@ if(command === 'mute') {
     }
   }
   let mutetime =  args[1];
+    if(!reason) return message.reply
   if(!mutetime) return message.reply("Tu n'a pas spécifier le temps avant l'unmute et de raison de mute!");
+  if(!reason) return message.reply("test")
    let mutedembed = new Discord.RichEmbed()
         .setDescription(`Avis de mute de ${tomute}`)
         .setColor("RANDOM")
@@ -401,7 +383,15 @@ if(command === 'mute') {
   //}
     
   
-
+ if(command === "serverlist") {
+    if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
+      var serverlist_embed = new Discord.RichEmbed()
+  .setColor("RANDOM")
+  .setTitle("**Nombre de Discord que Saturn est sur**")
+  .addField("Serveurs:",`${client.guilds.array().sort()}`)
+  .setFooter("Serverlist - Saturn")
+      message.channel.send(serverlist_embed)
+};
  
   
 
@@ -468,8 +458,6 @@ if(command === 'mute') {
     message.delete(); // Deletes the command
 
 }
- 
-  
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
@@ -479,7 +467,7 @@ if(command === 'mute') {
     if(!banmember)  
       return message.reply("Mentionnez une personne dans le serveur");
     if(!banmember.bannable) 
-      return message.reply("Je ne peut pas le ban! Ont-il un role plus haut? Est-ce que j'ai les permissions de ban?");
+      return message.reply("Je ne peut pas le ban! L'utilisateur a t-il un role plus haut? Est-ce que j'ai les permissions de ban?");
 
     let reason = args.slice(1).join(' ');
     if(!reason) reason = "Pas de raison fournie";
@@ -495,7 +483,7 @@ if(command === 'mute') {
     .addField("Raison du ban", `${reason}`)
   
     .setFooter("Avis de bannisement - Saturn")
-    message.reply(ban_embed)
+    message.channel.send(ban_embed)
    
   
   }
@@ -504,6 +492,8 @@ if(command === 'mute') {
     
       
 if(command === "help"){
+  
+   
   var help_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
@@ -535,12 +525,12 @@ if(command === "help"){
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
     .addField("Version du bot:","1.0.0")
-    .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false)
+    .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false) 
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
     .setThumbnail(client.user.avatarURL)
     .setFooter("Info - Saturn")
-    message.channel.sendEmbed(inf_embed)
+    message.channel.send(inf_embed)
     
   //message.member.send(`:eyes:Info sur moi:eyes:\nNom: Mars\nCreateur: LunatiikXD\nCreer avec discord.js 11.4.0\nJe suis sur ${client.guilds.size} serveurs !`)
  
@@ -556,18 +546,21 @@ if(command === "userinfo") {
     .addField("ID de l'utilisateur", user.id, true)
      .addField("Tu a rejoins ce discord le", message.member.joinedAt, true)
    .setFooter("Userinfo - Saturn")
-    message.channel.sendEmbed(userEmbed)
+    message.channel.send(userEmbed)
   }
   if(command === "serverinfo") {
     var servEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
     .setDescription("**Info du serveur Discord**")//tu peUx maider avec le clear? oui Mrc
+    .setThumbnail(message.guild.iconURL)
     .addField("Nom du serveur", message.guild.name, false)
     .addField("Crée le", message.guild.createdAt, true)
     .addField("Tu a rejoins le", message.member.joinedAt, true)
     .addField("Membres sur le serveur", message.guild.memberCount, false)
+    .addField("Propriétaire du Discord:", message.guild.owner.user.tag, false)
+    
     .setFooter("Serverinfo - Saturn")
-    message.channel.sendEmbed(servEmbed)
+    message.channel.send(servEmbed)
   }
   if(command === "avatar") {
     var avatar_embed = new Discord.RichEmbed()
@@ -575,7 +568,7 @@ if(command === "userinfo") {
 	  .setTitle("Avatar")
 	  .setImage(message.author.avatarURL)
 	  .setFooter("Avatar - Saturn")
-	  message.channel.sendEmbed(avatar_embed);
+	  message.channel.send(avatar_embed);
   }
 
 
