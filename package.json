@@ -2,9 +2,9 @@
   "//1": "describes your app and its dependencies",
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
-  "name": "hello-express",
-  "version": "1.0.0",
-  "description": "A simple Node app built on Express, instantly up and running.",
+  "name": "Saturn",
+  "version": "1.0.1",
+  "description": "Un bot Discord fondé sur Discord.js.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -22,7 +22,7 @@
     "node": "11.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/hello-express"
+    "url": "https://glitch.com/edit/#!/saturnbot17"
   },
   "license": "MIT",
   "keywords": [
