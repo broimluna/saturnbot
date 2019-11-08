@@ -35,7 +35,11 @@ const config = require("./config.json");
 
  client.on("ready", () => {
     console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`);
-   let statuses = [`s!help || Sur ${client.guilds.size} serveurs`, `s!help || ${client.users.size} personnes utilisent Saturn. `];
+   let statuses = [
+    `s!help || Sur ${client.guilds.size} serveurs.`, 
+    `s!help || ${client.users.size} personnes utilisent Saturn.`,
+    `s!help || s!invite pour inviter le bot.`
+   ];
    setInterval(function() {
      
      let status = statuses[Math.floor(Math.random()*statuses.length)];
@@ -501,18 +505,18 @@ if(command === "help"){
   .addField("Commandes amusantes","s!8ball | s!say | s!meme")
   .addField("Commandes de report","s!errormp | s!reporterror")
   .addField("Commandes d'informations","s!serverinfo | s!info | s!userinfo")
-  .addField("Autres commandes","s!help | s!invitation | s!ping | s!avatar")
+  .addField("Autres commandes","s!help | s!invite | s!ping | s!avatar")
   .setFooter("Help - Saturn")
 
   message.channel.send(help_embed)
   console.log("Un utilisateur a demandé de l'aide")
 }
-  if(command === "invitation"){
+  if(command === "invite"){
   var inv_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
-  .setTitle("Invitation")
+  .setTitle("Commande d'invitation du bot.")
   .addField("Invitez le bot sur votre serveur!", "https://discordapp.com/oauth2/authorize?client_id=639248385794113563&scope=bot&permissions=805314622")
-  .setFooter("Invitation - Saturn")
+  .setFooter("Invite - Saturn")
   message.channel.send(inv_embed);
   }
   
