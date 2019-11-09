@@ -424,8 +424,7 @@ if(command === 'mute') {
         .setDescription("Veuillez mentionner quelqu'un a warn, puis donner la raison du warn.")
 
         .setTimestamp();
-
-    if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(missingPermissionsEmbed); // Checks if the user has the permission
+   if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(missingPermissionsEmbed); // Checks if the user has the permission
 
     let mentioned = message.mentions.users.first(); // Gets the user mentioned! message.guild.channels.find(x => x.name === d-logs)
 
@@ -507,8 +506,8 @@ if(command === "help"){
   .addField("Commandes d'informations :information_source:","s!serverinfo | s!info | s!userinfo")
   .addField("Autres commandes :speech_balloon: ","s!help | s!invite | s!ping | s!avatar")
   .setFooter("Help - Saturn")
-
-  message.channel.send(help_embed)
+  message.reply("Regarde tes MPs! :eyes:")
+  message.author.send(help_embed)
   console.log("Un utilisateur a demandé de l'aide")
 }
   if(command === "invite"){
@@ -528,7 +527,7 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","1.0.1")
+    .addField("Version du bot:","1.0.2")
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false) 
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
     .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
@@ -591,8 +590,7 @@ if(command === "userinfo") {
     // Ooooh nice, combined conditions. <3
     if(!deleteCount || deleteCount < 2 || deleteCount > 100)
       return message.reply("Mettez un nombre entre 2 et 100 pour effacer les messages");
- if(!message.member.roles.some(r=>["Administrator", "Administrateur", "Moderator", "Moderateur", "Admin", "Modo", "Createur", "Créateur", "Fondateur",].includes(r.name)) )
-      return message.reply("Desolé! Tu n'as pas les permissions!");
+ if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply("Desolé! Tu n'as pas les permissions!");
     // So we get our messages, and delete them. Simple enough, right?
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
     message.channel.bulkDelete(fetched)
