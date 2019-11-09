@@ -500,6 +500,7 @@ if(command === "help"){
   var help_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
+  .setThumbnail(client.user.avatarURL)
   .addField("Commandes d'administration :tools:","s!kick | s!ban | s!warn | s!clear | s!mute")
   .addField("Commandes amusantes :video_game:","s!8ball | s!say | s!meme")
   .addField("Commandes de report :pencil:","s!errormp | s!reporterror")
@@ -568,7 +569,7 @@ if(command === "userinfo") {
   if(command === "avatar") {
     var avatar_embed = new Discord.RichEmbed()
 	  .setColor("RANDOM")
-	  .setTitle("Avatar")
+	  .setTitle(`Avatar de ${message.author.tag}`)
 	  .setImage(message.author.avatarURL)
 	  .setFooter("Avatar - Saturn")
 	  message.channel.send(avatar_embed);
