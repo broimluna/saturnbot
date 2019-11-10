@@ -36,7 +36,7 @@ const config = require("./config.json");
  client.on("ready", () => {
     console.log(`Saturn a demarré, avec ${client.users.size} personne(s), dans ${client.channels.size} channel(s) de ${client.guilds.size} discord(s).`);
    let statuses = [
-    `s!help || Sur ${client.guilds.size} serveurs.`, 
+    `s!help || Sur ${client.guilds.size} discords.`, 
     `s!help || ${client.users.size} personnes utilisent Saturn.`,
     `s!help || s!invite pour inviter le bot.`
    ];
@@ -134,6 +134,8 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
+  
+    
   // Let's go with a few common example commands! Feel free to delete or change those.
   
   if(command === "ping") {
@@ -157,11 +159,13 @@ client.on("message", async message => {
         message.channel.send(memeembed);
   }
   if(command === "annonce") {
-    if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
      const annonceMessage = args.join(" ");
-client.channels.get("639994872689983518").send(annonceMessage)
+ if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");                                                                                       
      message.delete().catch(O_o=>{}); 
+    client.channels.get("639994872689983518").send(annonceMessage)     
 };
+                                                                                      
+
   if(command === "eval"){
     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
                     let args = message.content.split(' ').slice(1)
@@ -202,7 +206,30 @@ client.channels.get("639994872689983518").send(annonceMessage)
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
   }
   
-	 
+	  if (command === "restart") {
+      let timeBeforeRestart =  args[1];
+     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
+            message.react("👍");
+            console.log("Redémarrage du bot en cours...");
+      await message.channel.send("Redémarrage du bot maintenant!")
+            client.destroy();
+
+       setTimeout(function(){
+    client.login(config.token);
+  }, 15000);
+          
+        }
+    if (command === "shutdown") {
+     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
+            message.react("👍");
+            console.log("Fermeture du bot en cours...");
+      await message.channel.send("Fermeture du bot maintenant!")
+            client.destroy();
+
+          
+        }
+    
+
   
     if(command === 'errormp') {
 	if (!args.length) {
@@ -213,6 +240,7 @@ client.channels.get("639994872689983518").send(annonceMessage)
 	}
 
 	    client.fetchUser("524668745520644117",false).then(user => {
+        
         var errormpEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
     .setDescription(`**Report de problème / bug de ${message.author.tag}**`)//tu peUx maider avec le clear? oui Mrc
@@ -320,7 +348,7 @@ if(command === 'mute') {
   let tomute = message.mentions.members.first() || message.guild.members.get(args[0])
   if(!tomute) return message.reply("Mentionnez une personne dans le serveur.\nUtilisation de la commande: s!mute [utilisateur] [temps] [raison]")
   
-   let reason = args.slice(1).join(' de mute a cause de: ');
+   let reason = args.slice(2).join(' ');
     if(!reason) reason = "Pas de raison fournie";
   
   let muterole = message.guild.roles.find(r => r.name === "Mute")
@@ -495,22 +523,21 @@ if(command === 'mute') {
     
       
 if(command === "help"){
-  
-   
-  var help_embed = new Discord.RichEmbed()
+ var help_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
   .setTitle("**Commandes de Saturn**")
   .setThumbnail(client.user.avatarURL)
-  .addField("Commandes d'administration :tools:","s!kick | s!ban | s!warn | s!clear | s!mute")
-  .addField("Commandes amusantes :video_game:","s!8ball | s!say | s!meme")
-  .addField("Commandes de report :pencil:","s!errormp | s!reporterror")
-  .addField("Commandes d'informations :information_source:","s!serverinfo | s!info | s!userinfo")
-  .addField("Autres commandes :speech_balloon: ","s!help | s!invite | s!ping | s!avatar")
+  .addField("Commandes d'administration :tools:","`s!kick` | `s!ban` | `s!warn` | `s!clear` | `s!mute`")
+  .addField("Commandes amusantes :video_game:","`s!8ball` | `s!say` | `s!meme`")
+  .addField("Commandes de report :pencil:","`s!errormp` | `s!reporterror`")
+  .addField("Commandes d'informations :information_source:","`s!serverinfo` | `s!info` | `s!userinfo`")
+  .addField("Autres commandes :speech_balloon: ","`s!help` | `s!invite` | `s!ping` | `s!avatar`")
   .setFooter("Help - Saturn")
   message.reply("Regarde tes MPs! :eyes:")
   message.author.send(help_embed)
   console.log("Un utilisateur a demandé de l'aide")
 }
+  
   if(command === "invite"){
   var inv_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
@@ -555,12 +582,12 @@ if(command === "userinfo") {
   if(command === "serverinfo") {
     var servEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
-    .setDescription("**Info du serveur Discord**")//tu peUx maider avec le clear? oui Mrc
+    .setDescription(`**Info du Discord: ${message.guild.name}**`)//tu peUx maider avec le clear? oui Mrc
     .setThumbnail(message.guild.iconURL)
-    .addField("Nom du serveur", message.guild.name, false)
+    .addField("Nom du Discord", message.guild.name, false)
     .addField("Crée le", message.guild.createdAt, true)
     .addField("Tu a rejoins le", message.member.joinedAt, true)
-    .addField("Membres sur le serveur", message.guild.memberCount, false)
+    .addField("Membres sur le Discord", message.guild.memberCount, false)
     .addField("Propriétaire du Discord:", message.guild.owner.user.tag, false)
     
     .setFooter("Serverinfo - Saturn")
@@ -594,6 +621,7 @@ if(command === "userinfo") {
  if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply("Desolé! Tu n'as pas les permissions!");
     // So we get our messages, and delete them. Simple enough, right?
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
+    message.channel.bulkDelete(1)
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Je n'ai pas reussi a effacer les messages a cause de: ${error}`));
     message.reply("J'ai supprimé ce nombre de message: " + deleteCount) 
