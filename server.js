@@ -14,7 +14,7 @@ app.listen(process.env.PORT);
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 2750);
-
+//-------
 
 
 
@@ -30,7 +30,11 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 // config.ownerID contains the Owner's id
+//----------
 
+
+
+//----------
 
 
  client.on("ready", () => {
@@ -212,7 +216,7 @@ client.on("message", async message => {
             message.react("👍");
             console.log("Redémarrage du bot en cours...");
       await message.channel.send("Redémarrage du bot maintenant!")
-            client.destroy();
+      client.destroy();
 
        setTimeout(function(){
     client.login(config.token);
@@ -228,6 +232,18 @@ client.on("message", async message => {
 
           
         }
+  if (command === "setstatus") {
+     let statusArgs = args.join("  ");;
+     if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
+            message.react("👍");
+            console.log("Changement du status en cours...");
+      await message.channel.send("Changement du status en cours...")
+         client.user.setActivity(statusArgs);
+    message.channel.send("Status changé!")
+
+          
+        }
+                                    
     
 
   
@@ -297,7 +313,22 @@ client.on("message", async message => {
     }
 
   
-
+if(command === "dm") {
+   let dmMember = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!dmMember)
+      return message.reply("Mentionnez une personne dans le serveur");
+    
+    // slice(1) removes the first part, which here should be the user mention or ID
+    // join(' ') takes all the various parts to make it a single string.
+    let dmArgs = args.slice(1).join(" ");
+    if(!dmArgs) dmArgs = "Pas de message fournie";
+  
+   
+    
+    // Now, time for a swift kick in the nuts!
+    await dmMember.send(dmArgs)
+    message.reply(`Message envoyé a ${dmMember.user.tag}.`)
+};
 
   
   if(command === "kick") {
@@ -337,9 +368,8 @@ client.on("message", async message => {
   
     .setFooter("Avis de kickement - Saturn")
     message.channel.send(kick_embed)
-       
-
-  }
+    }
+  
 
 if(command === 'mute') {
    if(!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send("Désolé, mais tu n'as pas la permission!");
@@ -487,8 +517,8 @@ if(command === 'mute') {
     message.channel.send(warnSuccessfulEmbed); // Sends the warn successful embed
 
     message.delete(); // Deletes the command
-
 }
+  
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
@@ -515,9 +545,7 @@ if(command === 'mute') {
   
     .setFooter("Avis de bannisement - Saturn")
     message.channel.send(ban_embed)
-   
-  
-  }
+    }
   
   
     
@@ -538,6 +566,21 @@ if(command === "help"){
   console.log("Un utilisateur a demandé de l'aide")
 }
   
+  if(command === "debug"){
+ if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");
+ var debug_embed = new Discord.RichEmbed()
+  .setColor("RANDOM")
+  .setTitle("**Debug mode**")
+  .setThumbnail(client.user.avatarURL)
+  .addField("Commandes du créateur:","s!serverlist | s!restart | s!shutdown | s!setstatus | s!eval | s!dm")
+  .addField("Nombre de Discords joint:",`${client.guilds.size} serveur(s)`)
+  .addField("Nombre d'utilisateurs:",`${client.users.size} personnes utilisent Saturn`)
+  .addField("Version de discord.js:", `${require('discord.js').version}`)
+  .addField("Créateur:", "LunatiikXD")
+  .setFooter("Debug - Saturn")
+  message.channel.send(debug_embed)
+}
+  
   if(command === "invite"){
   var inv_embed = new Discord.RichEmbed()
   .setColor("RANDOM")
@@ -555,10 +598,10 @@ if(command === "help"){
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
     .addField("Version de discord.js:", `${require('discord.js').version}`)
-    .addField("Version du bot:","1.0.2")
+    .addField("Version du bot:","1.1.0", true)
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false) 
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
-    .addField("Serveur Discord:", "https://discord.gg/7T6vyVV")
+    .addField("Serveur Discord:", "https://discord.gg/qCxgwp5")
     .setThumbnail(client.user.avatarURL)
     .setFooter("Info - Saturn")
     message.channel.send(inf_embed)
@@ -566,19 +609,22 @@ if(command === "help"){
   //message.member.send(`:eyes:Info sur moi:eyes:\nNom: Mars\nCreateur: LunatiikXD\nCreer avec discord.js 11.4.0\nJe suis sur ${client.guilds.size} serveurs !`)
  
      }
-    let user = message.mentions.users.first() || message.author;
+  
+   
 if(command === "userinfo") {
+  let user = message.mentions.users.first() || message.author;
    var userEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
     .setDescription(`**Info de ${message.author.tag}**`)//tu peUx maider avec le clear? oui Mrc
-   .setThumbnail(message.author.displayAvatarURL) 
-     .addField("Nom de l'utilisateur", message.author.tag, false)
+    .setThumbnail(message.author.displayAvatarURL) 
+    .addField("Nom de l'utilisateur", message.author.tag, false)
     .addField('Compte crée le:', `${user.createdAt}`, true)
     .addField("ID de l'utilisateur", user.id, true)
-     .addField("Tu a rejoins ce discord le", message.member.joinedAt, true)
-   .setFooter("Userinfo - Saturn")
+    .addField("Tu a rejoins ce discord le", message.member.joinedAt, true)
+    .setFooter("Userinfo - Saturn")
     message.channel.send(userEmbed)
   }
+  
   if(command === "serverinfo") {
     var servEmbed = new Discord.RichEmbed()
     .setColor('RANDOM')//mec pk ta retirer C koi cette couleur Blue Ok
@@ -593,6 +639,7 @@ if(command === "userinfo") {
     .setFooter("Serverinfo - Saturn")
     message.channel.send(servEmbed)
   }
+  
   if(command === "avatar") {
     var avatar_embed = new Discord.RichEmbed()
 	  .setColor("RANDOM")
