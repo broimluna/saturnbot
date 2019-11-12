@@ -5,6 +5,7 @@ const http = require('http');
 const ms = require('ms');
 const express = require('express');
 const randomPuppy = require('random-puppy');
+
 const app = express();
 app.get("/", (request, response) => {
  
@@ -31,7 +32,6 @@ const config = require("./config.json");
 // config.prefix contains the message prefix.
 // config.ownerID contains the Owner's id
 //----------
-
 
 
 //----------
@@ -77,7 +77,7 @@ client.on("guildCreate", guild => {
       if(guild.me.permissionsIn(channel).has("SEND_MESSAGES") && guild.me.permissionsIn(channel).has("VIEW_CHANNEL")) {
         found = true;
         return channel.send("Hey, je suis Saturn, Merci de m'avoir invité dans le serveur! Voir mes commandes est facile, faites s!help.")
-        console.log("Server joined")
+        
       }
   })
 });
@@ -101,6 +101,7 @@ if(guild.systemChannel){
 	.setTimestamp() // Sets a timestamp at the end of the embed
 	);
 }
+    console.log(`${memberTag} a rejoins le discord ${guild.name}. Ce discord a ${guild.memberCount} membres!`);
 });
 client.on("guildMemberRemove", (member) => { // Check out previous chapter for information about this event
 let guild = member.guild; 
@@ -115,6 +116,7 @@ if(guild.systemChannel){
 	.setTimestamp() // Sets a timestamp at the end of the embed
 	);
 }
+   console.log(`${memberTag} a quitté le discord ${guild.name}. Ce discord a ${guild.memberCount} membres!`);
 });
 
 
@@ -143,10 +145,12 @@ client.on("message", async message => {
   // Let's go with a few common example commands! Feel free to delete or change those.
   
   if(command === "ping") {
+
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Attends une seconde...");
     m.edit(`Pong! :ping_pong: La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. La latence de l'API est de ${Math.round(client.ping)}ms`);
+       console.log(`${message.author.tag} a utiliser la commande Ping dans le discord ${message.guild.name}.`);
   }
   if(command === "meme") {
             const subReddits = ["dankmeme", "meme", "me_irl"];
@@ -161,12 +165,14 @@ client.on("message", async message => {
             .setFooter(`Si l'image n'apparait pas immédiatement, veuillez attendre quelque secondes pour que l'image charge :)`)
 
         message.channel.send(memeembed);
+           console.log(`${message.author.tag} a utiliser la commande Meme dans le discord ${message.guild.name}.`);
   }
   if(command === "annonce") {
      const annonceMessage = args.join(" ");
  if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");                                                                                       
      message.delete().catch(O_o=>{}); 
-    client.channels.get("639994872689983518").send(annonceMessage)     
+    client.channels.get("639994872689983518").send(annonceMessage)    
+   console.log(`${message.author.tag} a utiliser la commande Annonce dans le discord ${message.guild.name}.`);
 };
                                                                                       
 
@@ -187,6 +193,7 @@ client.on("message", async message => {
                             message.react("❌")
             message.channel.send(`${err}`, {code:"js"})
                     }
+           console.log(`${message.author.tag} a utiliser la commande Eval dans le discord ${message.guild.name}.`);
             }
  
  
@@ -208,6 +215,7 @@ client.on("message", async message => {
   client.channels.get("639997214403592192").send(reportEmbed)
    
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
+         console.log(`${message.author.tag} a utiliser la commande ReportError dans le discord ${message.guild.name}. \nErreur reporté: ${args.join(' ')}`);
   }
   
 	  if (command === "restart") {
@@ -215,6 +223,7 @@ client.on("message", async message => {
      if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
             message.react("👍");
             console.log("Redémarrage du bot en cours...");
+      console.log(`${message.author.tag} a utiliser la commande Restart dans le discord ${message.guild.name}.`);
       await message.channel.send("Redémarrage du bot maintenant!")
       client.destroy();
 
@@ -227,20 +236,22 @@ client.on("message", async message => {
      if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
             message.react("👍");
             console.log("Fermeture du bot en cours...");
+       console.log(`${message.author.tag} a utiliser la commande Shutdown dans le discord ${message.guild.name}.`);
       await message.channel.send("Fermeture du bot maintenant!")
             client.destroy();
 
           
         }
   if (command === "setstatus") {
-     let statusArgs = args.join("  ");;
+     let statusArgs = args.join("  ");
      if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
             message.react("👍");
             console.log("Changement du status en cours...");
       await message.channel.send("Changement du status en cours...")
          client.user.setActivity(statusArgs);
     message.channel.send("Status changé!")
-
+ console.log(`Changement du status a: ${statusArgs}`);
+     console.log(`${message.author.tag} a utiliser la commande SetStatus dans le discord ${message.guild.name}.`);
           
         }
                                     
@@ -269,6 +280,7 @@ client.on("message", async message => {
 })
 	   
     message.reply("Merci de ton soutien! Je vais regarder ton erreur.")
+      console.log(`${message.author.tag} a utiliser la commande ErrorMP dans le discord ${message.guild.name}.`);
     
 };
    
@@ -281,13 +293,13 @@ client.on("message", async message => {
     // To get the "message" itself we join the `args` back into a string with spaces: 
     
     const sayMessage = args.join(" ");
-    
+    if(!sayMessage) return message.reply("Tu n'as pas écrit de texte a répéter!")
     // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing:
     message.channel.send(sayMessage);
  
-   
+   console.log(`${message.author.tag} a utiliser la commande Say dans le discord ${message.guild.name}. L'utilisateur a dit ${sayMessage}`);
       
     }
   
@@ -310,10 +322,12 @@ client.on("message", async message => {
     .setTitle(":8ball:ball")
     .addField(ballText, sayings[result])
     message.channel.send({embed:embed})
+      console.log(`${message.author.tag} a utiliser la commande 8ball dans le discord ${message.guild.name}.`);
     }
 
   
 if(command === "dm") {
+   if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
    let dmMember = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!dmMember)
       return message.reply("Mentionnez une personne dans le serveur");
@@ -326,8 +340,9 @@ if(command === "dm") {
    
     
     // Now, time for a swift kick in the nuts!
-    await dmMember.send(dmArgs)
+    await dmMember.send(`${message.author.tag} vous a envoyé ce message: ` + dmArgs)
     message.reply(`Message envoyé a ${dmMember.user.tag}.`)
+  console.log(`${message.author.tag} a utiliser la commande DM dans le discord ${message.guild.name}.`);
 };
 
   
@@ -368,6 +383,7 @@ if(command === "dm") {
   
     .setFooter("Avis de kickement - Saturn")
     message.channel.send(kick_embed)
+    console.log(`${message.author.tag} a utiliser la commande Kick dans le discord ${message.guild.name}.`);
     }
   
 
@@ -417,6 +433,7 @@ if(command === 'mute') {
         message.delete()
         tomute.send(mutedembed)
         message.channel.send(`${tomute.user.username} a été muté pendant ${ms(ms(mutetime))}!`)
+        console.log(`${message.author.tag} a utiliser la commande Mute dans le discord ${message.guild.name}.`);
       })
     setTimeout(function(){
     tomute.removeRole(muterole.id);
@@ -453,6 +470,7 @@ if(command === 'mute') {
   .addField("Serveurs:",`${client.guilds.array().sort()}`)
   .setFooter("Serverlist - Saturn")
       message.channel.send(serverlist_embed)
+   console.log(`${message.author.tag} a utiliser la commande Serverlist dans le discord ${message.guild.name}.`);
 };
  
   
@@ -517,6 +535,7 @@ if(command === 'mute') {
     message.channel.send(warnSuccessfulEmbed); // Sends the warn successful embed
 
     message.delete(); // Deletes the command
+    console.log(`${message.author.tag} a utiliser la commande Warn dans le discord ${message.guild.name}.`);
 }
   
   if(command === "ban") {
@@ -545,6 +564,7 @@ if(command === 'mute') {
   
     .setFooter("Avis de bannisement - Saturn")
     message.channel.send(ban_embed)
+    console.log(`${message.author.tag} a utiliser la commande Ban dans le discord ${message.guild.name}.`);
     }
   
   
@@ -563,7 +583,7 @@ if(command === "help"){
   .setFooter("Help - Saturn")
   message.reply("Regarde tes MPs! :eyes:")
   message.author.send(help_embed)
-  console.log("Un utilisateur a demandé de l'aide")
+ console.log(`${message.author.tag} a utiliser la commande Help dans le discord ${message.guild.name}.`);
 }
   
   if(command === "debug"){
@@ -579,6 +599,7 @@ if(command === "help"){
   .addField("Créateur:", "LunatiikXD")
   .setFooter("Debug - Saturn")
   message.channel.send(debug_embed)
+    console.log(`${message.author.tag} a utiliser la commande Debug dans le discord ${message.guild.name}.`);
 }
   
   if(command === "invite"){
@@ -588,6 +609,7 @@ if(command === "help"){
   .addField("Invitez le bot sur votre serveur!", "https://discordapp.com/oauth2/authorize?client_id=639248385794113563&scope=bot&permissions=805314622")
   .setFooter("Invite - Saturn")
   message.channel.send(inv_embed);
+    console.log(`${message.author.tag} a utiliser la commande Invite dans le discord ${message.guild.name}.`);
   }
   
  
@@ -605,6 +627,7 @@ if(command === "help"){
     .setThumbnail(client.user.avatarURL)
     .setFooter("Info - Saturn")
     message.channel.send(inf_embed)
+       console.log(`${message.author.tag} a utiliser la commande Info dans le discord ${message.guild.name}.`);
     
   //message.member.send(`:eyes:Info sur moi:eyes:\nNom: Mars\nCreateur: LunatiikXD\nCreer avec discord.js 11.4.0\nJe suis sur ${client.guilds.size} serveurs !`)
  
@@ -623,6 +646,7 @@ if(command === "userinfo") {
     .addField("Tu a rejoins ce discord le", message.member.joinedAt, true)
     .setFooter("Userinfo - Saturn")
     message.channel.send(userEmbed)
+  console.log(`${message.author.tag} a utiliser la commande Userinfo dans le discord ${message.guild.name}.`);
   }
   
   if(command === "serverinfo") {
@@ -638,6 +662,7 @@ if(command === "userinfo") {
     
     .setFooter("Serverinfo - Saturn")
     message.channel.send(servEmbed)
+    console.log(`${message.author.tag} a utiliser la commande Serverinfo dans le discord ${message.guild.name}.`);
   }
   
   if(command === "avatar") {
@@ -647,6 +672,7 @@ if(command === "userinfo") {
 	  .setImage(message.author.avatarURL)
 	  .setFooter("Avatar - Saturn")
 	  message.channel.send(avatar_embed);
+    console.log(`${message.author.tag} a utiliser la commande Avatar dans le discord ${message.guild.name}.`);
   }
 
 
@@ -675,6 +701,7 @@ if(command === "userinfo") {
     setTimeout(function(){ 
       message.channel.bulkDelete(1)
 }, 2000);
+    console.log(`${message.author.tag} a utiliser la commande Clear dans le discord ${message.guild.name}.`);
    
     
     
