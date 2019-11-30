@@ -46,9 +46,9 @@ const config = require("./config.json");
    ];
    setInterval(function() {
      
-     let status = statuses[Math.floor(Math.random()*statuses.length)];
+     var botstatus = statuses[Math.floor(Math.random()*statuses.length)];
      
-     client.user.setPresence({ game : { name: status }, status: "online"})
+     client.user.setPresence({ game : { name: botstatus }, status: "online"})
    }, 60000)
  });
 
@@ -68,7 +68,9 @@ const config = require("./config.json");
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   console.log(`Nouveau discord: ${guild.name} (id: ${guild.id}). Ce discord a ${guild.memberCount} membres!`);
-  client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
+client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
+     
+
    var found = false;
   guild.channels.forEach(function(channel, id) {
       if(found == true || channel.type != "text") {
@@ -86,7 +88,7 @@ client.on("guildCreate", guild => {
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   console.log(`J'ai été retiré de: ${guild.name} et l'ID est :(id: ${guild.id})`);
-  client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
+client.user.setActivity(`s!help | Sur ${client.guilds.size} serveurs`);
 });
 client.on("guildMemberAdd", (member) => { // Check out previous chapter for information about this event
 let guild = member.guild; 
@@ -150,7 +152,7 @@ client.on("message", async message => {
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Attends une seconde...");
     m.edit(`Pong! :ping_pong: La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. La latence de l'API est de ${Math.round(client.ping)}ms`);
-       console.log(`${message.author.tag} a utiliser la commande Ping dans le discord ${message.guild.name}.`);
+       console.log(`${message.author.tag} a utilisé la commande Ping dans le discord ${message.guild.name}.`);
   }
   if(command === "meme") {
             const subReddits = ["dankmeme", "meme", "me_irl"];
@@ -165,14 +167,14 @@ client.on("message", async message => {
             .setFooter(`Si l'image n'apparait pas immédiatement, veuillez attendre quelque secondes pour que l'image charge :)`)
 
         message.channel.send(memeembed);
-           console.log(`${message.author.tag} a utiliser la commande Meme dans le discord ${message.guild.name}.`);
+           console.log(`${message.author.tag} a utilisé la commande Meme dans le discord ${message.guild.name}.`);
   }
   if(command === "annonce") {
      const annonceMessage = args.join(" ");
  if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");                                                                                       
      message.delete().catch(O_o=>{}); 
-    client.channels.get("639994872689983518").send(annonceMessage)    
-   console.log(`${message.author.tag} a utiliser la commande Annonce dans le discord ${message.guild.name}.`);
+    client.channels.get("650422877258252298").send(annonceMessage)    
+   console.log(`${message.author.tag} a utilisé la commande Annonce dans le discord ${message.guild.name}.`);
 };
                                                                                       
 
@@ -193,7 +195,7 @@ client.on("message", async message => {
                             message.react("❌")
             message.channel.send(`${err}`, {code:"js"})
                     }
-           console.log(`${message.author.tag} a utiliser la commande Eval dans le discord ${message.guild.name}.`);
+           console.log(`${message.author.tag} a utilisé la commande Eval dans le discord ${message.guild.name}.`);
             }
  
  
@@ -212,10 +214,10 @@ client.on("message", async message => {
    .addField("Erreur / bug:", `${args.join(' ')}`, true)
      .addField("Type d'erreur", "Erreur sur le Discord.")
     .setFooter("Avis de report - Saturn")
-  client.channels.get("639997214403592192").send(reportEmbed)
+  client.channels.get("650426196496089148").send(reportEmbed)
    
     message.reply("Merci de ton soutien! Je vais regarder ca de plus près.")
-         console.log(`${message.author.tag} a utiliser la commande ReportError dans le discord ${message.guild.name}. \nErreur reporté: ${args.join(' ')}`);
+         console.log(`${message.author.tag} a utilisé la commande ReportError dans le discord ${message.guild.name}. \nErreur reporté: ${args.join(' ')}`);
   }
   
 	  if (command === "restart") {
@@ -223,7 +225,7 @@ client.on("message", async message => {
      if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
             message.react("👍");
             console.log("Redémarrage du bot en cours...");
-      console.log(`${message.author.tag} a utiliser la commande Restart dans le discord ${message.guild.name}.`);
+      console.log(`${message.author.tag} a utilisé la commande Restart dans le discord ${message.guild.name}.`);
       await message.channel.send("Redémarrage du bot maintenant!")
       client.destroy();
 
@@ -236,7 +238,7 @@ client.on("message", async message => {
      if(message.author.id !== config.ownerID) return message.reply("Desolé, mais tu n'a pas accès à cette commande!");   
             message.react("👍");
             console.log("Fermeture du bot en cours...");
-       console.log(`${message.author.tag} a utiliser la commande Shutdown dans le discord ${message.guild.name}.`);
+       console.log(`${message.author.tag} a utilisé la commande Shutdown dans le discord ${message.guild.name}.`);
       await message.channel.send("Fermeture du bot maintenant!")
             client.destroy();
 
@@ -251,7 +253,7 @@ client.on("message", async message => {
          client.user.setActivity(statusArgs);
     message.channel.send("Status changé!")
  console.log(`Changement du status a: ${statusArgs}`);
-     console.log(`${message.author.tag} a utiliser la commande SetStatus dans le discord ${message.guild.name}.`);
+     console.log(`${message.author.tag} a utilisé la commande SetStatus dans le discord ${message.guild.name}.`);
           
         }
                                     
@@ -280,7 +282,7 @@ client.on("message", async message => {
 })
 	   
     message.reply("Merci de ton soutien! Je vais regarder ton erreur.")
-      console.log(`${message.author.tag} a utiliser la commande ErrorMP dans le discord ${message.guild.name}.`);
+      console.log(`${message.author.tag} a utilisé la commande ErrorMP dans le discord ${message.guild.name}.`);
     
 };
    
@@ -299,11 +301,10 @@ client.on("message", async message => {
     // And we get the bot to say the thing:
     message.channel.send(sayMessage);
  
-   console.log(`${message.author.tag} a utiliser la commande Say dans le discord ${message.guild.name}. L'utilisateur a dit ${sayMessage}`);
+   console.log(`${message.author.tag} a utilisé la commande Say dans le discord ${message.guild.name}. L'utilisateur a dit ${sayMessage}`);
       
     }
   
-
 
 
 
@@ -312,17 +313,17 @@ client.on("message", async message => {
 
     if (command === "8ball") {
      
-      var sayings = ["Oui", "Non", "Peut-etre", "Peut-etre pas", "Certainement", "Certainement pas", "Bien sur!", "Pas-sur...",]
+      var sayings = ["Oui", "Non", "Peut-etre", "Peut-etre pas", "Certainement", "Certainement pas", "Bien sur!", "Pas sur...",]
   const ballText = args.join(" ");
 			var result = Math.floor((Math.random() * sayings.length) + 0);
       if(!ballText)
       return message.reply("Veuillez demander une question pour utiliser 8ball :8ball: ")
 			const embed = new Discord.RichEmbed()
      .setColor("RANDOM")
-    .setTitle(":8ball:ball")
+    .setTitle("8ball")
     .addField(ballText, sayings[result])
     message.channel.send({embed:embed})
-      console.log(`${message.author.tag} a utiliser la commande 8ball dans le discord ${message.guild.name}.`);
+      console.log(`${message.author.tag} a utilisé la commande 8ball dans le discord ${message.guild.name}.`);
     }
 
   
@@ -342,7 +343,7 @@ if(command === "dm") {
     // Now, time for a swift kick in the nuts!
     await dmMember.send(`${message.author.tag} vous a envoyé ce message: ` + dmArgs)
     message.reply(`Message envoyé a ${dmMember.user.tag}.`)
-  console.log(`${message.author.tag} a utiliser la commande DM dans le discord ${message.guild.name}.`);
+  console.log(`${message.author.tag} a utilisé la commande DM dans le discord ${message.guild.name}.`);
 };
 
   
@@ -383,7 +384,7 @@ if(command === "dm") {
   
     .setFooter("Avis de kickement - Saturn")
     message.channel.send(kick_embed)
-    console.log(`${message.author.tag} a utiliser la commande Kick dans le discord ${message.guild.name}.`);
+    console.log(`${message.author.tag} a utilisé la commande Kick dans le discord ${message.guild.name}.`);
     }
   
 
@@ -433,7 +434,7 @@ if(command === 'mute') {
         message.delete()
         tomute.send(mutedembed)
         message.channel.send(`${tomute.user.username} a été muté pendant ${ms(ms(mutetime))}!`)
-        console.log(`${message.author.tag} a utiliser la commande Mute dans le discord ${message.guild.name}.`);
+        console.log(`${message.author.tag} a utilisé la commande Mute dans le discord ${message.guild.name}.`);
       })
     setTimeout(function(){
     tomute.removeRole(muterole.id);
@@ -470,7 +471,7 @@ if(command === 'mute') {
   .addField("Serveurs:",`${client.guilds.array().sort()}`)
   .setFooter("Serverlist - Saturn")
       message.channel.send(serverlist_embed)
-   console.log(`${message.author.tag} a utiliser la commande Serverlist dans le discord ${message.guild.name}.`);
+   console.log(`${message.author.tag} a utilisé la commande Serverlist dans le discord ${message.guild.name}.`);
 };
  
   
@@ -619,11 +620,11 @@ if(command === "help"){
     .setDescription("**Info sur moi**")
     .addField("Nom:", "Saturn", true)
     .addField("Créateur:", "LunatiikXD", true)
-    .addField("Version de discord.js:", `${require('discord.js').version}`)
+    .addField("Version de discord.js:", `${require('discord.js').version}`, false)
     .addField("Version du bot:","1.1.0", true)
     .addField(`Serveurs:`, `${client.guilds.size} serveur(s)`, false) 
     .addField(`Utilisateurs:`, `${client.users.size} personnes utilisent Saturn`, false)
-    .addField("Serveur Discord:", "https://discord.gg/qCxgwp5")
+    .addField("Discord:", "https://discord.gg/BZJ6SBk")
     .setThumbnail(client.user.avatarURL)
     .setFooter("Info - Saturn")
     message.channel.send(inf_embed)
@@ -658,7 +659,7 @@ if(command === "userinfo") {
     .addField("Crée le", message.guild.createdAt, true)
     .addField("Tu a rejoins le", message.member.joinedAt, true)
     .addField("Membres sur le Discord", message.guild.memberCount, false)
-    .addField("Propriétaire du Discord:", message.guild.owner.user.tag, false)
+    .addField("Propriétaire du Discord:", message.guild.owner.user.tag, true)
     
     .setFooter("Serverinfo - Saturn")
     message.channel.send(servEmbed)
